@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import CreateForm from './views/forms/Create'
+import CreateForm from './views/forms/CreateForm'
 
 import Container from '@material-ui/core/Container'
 
