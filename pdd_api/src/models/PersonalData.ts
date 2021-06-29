@@ -6,7 +6,7 @@ import { prop } from '@typegoose/typegoose'
  * This is implementing typegoose
  */
 
-export class Member {
+export class PersonalData {
 	@prop({ required: true })
 	email!: string
 

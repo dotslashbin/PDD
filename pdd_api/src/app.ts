@@ -1,5 +1,6 @@
 import express from 'express'
 import * as dotenv from 'dotenv'
+import mongoose from 'mongoose'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 dotenv.config()
@@ -22,4 +23,9 @@ async function startServer() {
 		})
 }
 
+function startDatabase() {
+	mongoose.connect(`${process.env.MONGOURL}`)
+}
+
 startServer()
+startDatabase()
