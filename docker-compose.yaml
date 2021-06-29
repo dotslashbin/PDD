@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+    ivsapi:
+        build:
+            context: ./api
+        networks:
+          ivsnetwork:
+            ipv4_address: 10.6.0.7
+        environment:
+          - PORT=3000
+          - TOKEN_SECRET="videostuff"
+          - MONGOURL=mongodb://ivsmongodb:27017/ivsdemo
+    ivsnginx:
+        restart: always
+        build:
+            context: ./nginx
+        ports:
+            - "80:80"
+            - "9080:9080"
+        networks:
+          ivsnetwork:
+            ipv4_address: 10.6.0.8
+        volumes:
+          - ./webapp:/usr/share/nginx/html
+    ivsmongodb:
+        image: mongo
+        ports:
+            - "27017:27017"
+        restart: unless-stopped
+        networks:
+          ivsnetwork:
+            ipv4_address: 10.6.0.9
+networks:
+  ivsnetwork:
+      driver: bridge
+      ipam:
+        config:
+            - subnet: 10.6.0.0/16
