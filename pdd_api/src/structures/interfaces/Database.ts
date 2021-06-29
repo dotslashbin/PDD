@@ -7,7 +7,7 @@ export interface DBConnector {
 }
 
 export interface DBWriter extends DBConnector {
-	Save(params: any): any
+	Save(params: any, model: any): any
 }
 
 // export interface DBReader {
