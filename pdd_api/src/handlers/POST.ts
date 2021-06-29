@@ -5,5 +5,5 @@ export async function Create(
 	request: Request,
 	response: Response
 ): Promise<void> {
-	ReturnSuccess(200, response, 'create', request.body, 'do this')
+	ReturnSuccess(201, response, 'create', request.body, 'do this')
 }
