@@ -1,26 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import './App.css'
+import CreateForm from './views/forms/CreateForm'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Container from '@material-ui/core/Container'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function App(): any {
+	return (
+		<Container className="App">
+			<CreateForm />
+		</Container>
+	)
 }
-
-export default App;
