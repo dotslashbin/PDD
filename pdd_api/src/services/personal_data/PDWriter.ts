@@ -6,9 +6,7 @@ export default class PDWriter {
 	static async Create(params: Payload, db: DBWriter): Promise<any> {
 		try {
 			const model = getModelForClass(PersonalData)
-			const result = db.Save(params, model)
-
-			return result
+			return db.Save(params, model)
 		} catch (error) {
 			return error
 		}
