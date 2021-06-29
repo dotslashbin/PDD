@@ -1,44 +1,25 @@
-import _ from 'lodash'
+import express from 'express'
+import * as dotenv from 'dotenv'
 
-const dafunc = (): void => {
-	const out = _.join(['hello', 'wepback'], 'XX')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+dotenv.config()
 
-	console.log(out)
+async function startServer() {
+	const app = express()
+
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	await require('./loaders').default(app)
+
+	app
+		.listen(process.env.PORT, () => {
+			// eslint-disable-next-line no-console
+			console.log(`The server is running on port ${process.env.PORT}`)
+		})
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		.on('error', (error: any) => {
+			// eslint-disable-next-line no-console
+			console.error(`Express failed: ${error}`)
+		})
 }
 
-const lonelyInteger = (collection: number[]): number[] => {
-	const result: number[] = []
-
-	for (let i = 0; i < collection.length; i++) {
-		const currentInt = collection[i]
-		let hasDup = false
-		for(let k = 0; k < collection.length; k++) {
-			if(k != i) {
-				if(currentInt === collection[k]) {
-					hasDup = true
-				}
-			}
-		}
-
-		if(!hasDup) {
-			result.push(currentInt)
-		}
-	}
-	
-
-	return result
-}
-
-const whatXOR = (): void => {
-	const x = 10 
-	const y = 15
-
-	const result  = x ^ y
-	console.log(result)
-}
-
-dafunc()
-const lonely = lonelyInteger([1, 2, 3, 4, 3, 2, 1, 4, 23, 44,55,11,2, 66, 55, 44])
-console.log(lonely)
-
-whatXOR()
+startServer()
