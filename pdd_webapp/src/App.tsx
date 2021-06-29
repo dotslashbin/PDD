@@ -1,20 +1,14 @@
 import React from 'react'
 import './App.css'
+import CreateForm from './views/forms/Create'
 
-import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 
-// const useStyles = makeStyles(theme => ({
-  
-// })
-
-
-export default function App() {
-
-	const classes = useStyles()
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function App(): any {
 	return (
 		<Container className="App">
+			<CreateForm />
 		</Container>
 	)
 }
