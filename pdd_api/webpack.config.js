@@ -1,4 +1,5 @@
 const path = require('path')
+const { ModuleFilenameHelpers } = require( 'webpack' )
 
 module.exports = {
 	entry: './src/app.ts',
@@ -14,6 +15,16 @@ module.exports = {
 	},
 	resolve: {
 		extensions: [ '.tsx', '.ts', '.js' ],
+		fallback: {
+			zlib: false,
+			path: false,
+			crypto: false,
+			fs: false,
+			stream: false, 
+			http: false,
+			os: false, 
+			net: false
+		}
 	},
 	output: {
 		filename: 'bundle.js',
