@@ -27,6 +27,7 @@ export default function CreateForm(): any {
 
 	const [email, setEmail] = useState('')
 	const [fullName, setFullName] = useState('')
+	const [attachemnt, setAttachment] = useState('')
 
 	const updateEmailValue = (value: string) => {
 		setEmail(value)
@@ -36,9 +37,24 @@ export default function CreateForm(): any {
 		setFullName(value)
 	}
 
+	const updateAttachment = (e: any) => {
+		e.preventDefault()
+
+		const file = e.target.files[0]
+		console.log('file', file)
+		if (file) {
+			const reader = new FileReader()
+			reader.onload = (readerEvt: any) => {
+				const binaryString = readerEvt.target.result
+				setAttachment(binaryString)
+			}
+			reader.readAsBinaryString(file)
+		}
+	}
+
 	const submitForm = async () => {
 		try {
-			const result = await PersonalDataSelector.Create(email, fullName)	
+			const result = await PersonalDataSelector.Create(email, fullName, attachemnt)	
 			console.log(result)
 		} catch (error) {
 			console.error(`There is an error: ${error}`)
@@ -78,6 +94,7 @@ export default function CreateForm(): any {
 						value={fullName}
 						onChange={(input: any) => {updateFullName(input.target.value)}}
 					/>
+					<input type="file" name="cv" onChange={updateAttachment} />
 					<Button
 						type="button"
 						fullWidth
