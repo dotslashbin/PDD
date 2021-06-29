@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography, TextField } from '@material-ui/core'
+import PersonalDataSelector from '../../selectors/PersonalData'
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -23,6 +24,27 @@ const useStyles = makeStyles((theme) => ({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function CreateForm(): any {
 	const classes = useStyles()
+
+	const [email, setEmail] = useState('')
+	const [fullName, setFullName] = useState('')
+
+	const updateEmailValue = (value: string) => {
+		setEmail(value)
+	}
+
+	const updateFullName = (value: string) => {
+		setFullName(value)
+	}
+
+	const submitForm = async () => {
+		try {
+			const result = await PersonalDataSelector.Create(email, fullName)	
+			console.log(result)
+		} catch (error) {
+			console.error(`There is an error: ${error}`)
+		}
+	}
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
@@ -41,6 +63,8 @@ export default function CreateForm(): any {
 						name="email"
 						autoComplete="email"
 						autoFocus
+						value={email}
+						onChange={(input: any) => {updateEmailValue(input.target.value)}}
 					/>
 					<TextField
 						variant="outlined"
@@ -51,13 +75,16 @@ export default function CreateForm(): any {
 						label="Full Name"
 						name="name"
 						autoComplete="name"
+						value={fullName}
+						onChange={(input: any) => {updateFullName(input.target.value)}}
 					/>
 					<Button
-						type="submit"
+						type="button"
 						fullWidth
 						variant="contained"
 						color="primary"
 						className={classes.submit}
+						onClick={() => {submitForm()}}
 					>
             Submit
 					</Button>
