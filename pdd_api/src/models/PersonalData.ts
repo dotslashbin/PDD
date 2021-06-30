@@ -15,4 +15,7 @@ export class PersonalData {
 
 	@prop()
 	attachment!: string
+
+	@prop()
+	iv!: string
 }

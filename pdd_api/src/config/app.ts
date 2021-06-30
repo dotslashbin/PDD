@@ -1,1 +1,2 @@
-export const VERSION = '0.1.2'
+export const VERSION = '0.2.1'
+export const TOKEN_ALGO = 'HS512'
