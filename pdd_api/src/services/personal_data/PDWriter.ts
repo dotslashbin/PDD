@@ -28,7 +28,7 @@ export default class PDWriter {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-	static getEncryptedValues(params: Payload, iv: any): Payload {
+	private static getEncryptedValues(params: Payload, iv: any): Payload {
 		let { email, fullName } = params
 		const { attachment } = params
 
