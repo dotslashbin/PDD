@@ -1,8 +1,4 @@
 import express from 'express'
-import * as dotenv from 'dotenv'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-dotenv.config()
 
 async function startServer() {
 	const app = express()

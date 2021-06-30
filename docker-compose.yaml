@@ -1,37 +1,40 @@
 version: "3.8"
 services:
-    ivsapi:
+    pdd_api:
         build:
-            context: ./api
+            context: ./pdd_api
+        image: pdd_api
+        container_name: pdd_api
         networks:
-          ivsnetwork:
+          pddnet:
             ipv4_address: 10.6.0.7
         environment:
-          - PORT=3000
-          - TOKEN_SECRET="videostuff"
-          - MONGOURL=mongodb://ivsmongodb:27017/ivsdemo
-    ivsnginx:
+          - PORT=3001
+          - MONGOURL=mongodb://pdd_db:27017/pdd
+        ports:
+          - "3001:3001"
+    pdd_nginx:
         restart: always
         build:
             context: ./nginx
+        image: pdd_nginx
+        container_name: pdd_nginx
         ports:
             - "80:80"
-            - "9080:9080"
         networks:
-          ivsnetwork:
+          pddnet:
             ipv4_address: 10.6.0.8
-        volumes:
-          - ./webapp:/usr/share/nginx/html
-    ivsmongodb:
+    pdd_db:
         image: mongo
+        container_name: pdd_db
         ports:
             - "27017:27017"
         restart: unless-stopped
         networks:
-          ivsnetwork:
+          pddnet:
             ipv4_address: 10.6.0.9
 networks:
-  ivsnetwork:
+  pddnet:
       driver: bridge
       ipam:
         config:

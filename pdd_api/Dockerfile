@@ -12,9 +12,9 @@ RUN npm install
 RUN npm ci --only=production
 
 # Copying files
-COPY dist/. .
+COPY build/. .
 RUN npm install pm2 -g
 
 # Setting up runtime
-EXPOSE 3000
+EXPOSE 3001
 CMD ["pm2-runtime", "app.js"]
