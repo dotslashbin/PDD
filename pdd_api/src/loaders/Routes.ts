@@ -12,5 +12,5 @@ export default ({ app }: { app: express.Application }): void => {
 		response.json({ body: request.body, version: VERSION })
 	})
 
-	app.post('/personal-data', express.json(), Create)
+	app.post('/personal-data', express.json({ limit: '500kb' }), Create)
 }
