@@ -30,4 +30,12 @@ module.exports = {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'build'),
 	},
+	performance: {
+		hints: false,
+		maxEntrypointSize: 512000,
+		maxAssetSize: 512000
+	},
+	stats: {
+		errorDetails: true
+	}
 }
