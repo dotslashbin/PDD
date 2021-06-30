@@ -6,7 +6,7 @@ export default class PersonalDataSelector {
 		email: string,
 		attachment: string
 	): Promise<any> {
-		return await axios
+		return axios
 			.post('http://localhost:3001/personal-data', { name, email, attachment })
 			.then((result) => result)
 			.catch((error) => {
