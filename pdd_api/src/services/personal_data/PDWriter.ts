@@ -6,29 +6,40 @@ import { Encrypt } from '../../helpers/Utilities'
 import crypto from 'crypto'
 
 export default class PDWriter {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async Create(params: Payload, db: DBWriter): Promise<any> {
-		try {
-			const model = getModelForClass(PersonalData)
+		const model = getModelForClass(PersonalData)
+		const iv = crypto.randomBytes(16)
 
-			const { email, fullName, attachment } = params
+		const { email, fullName, attachment } = this.getEncryptedValues(params, iv)
 
-			const iv = crypto.randomBytes(16)
-
-			const encEmail = Encrypt(email, iv)
-			const encFullName = Encrypt(fullName, iv)
-
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			return db.Save(
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		return db
+			.Save(
 				{
-					email: encEmail.content,
-					fullName: encFullName.content,
+					email,
+					fullName,
 					attachment,
-					iv: encEmail.iv,
+					iv,
 				},
 				model
 			)
-		} catch (error) {
-			return error
+			.catch((error: any) => error)
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	static getEncryptedValues(params: Payload, iv: any): Payload {
+		let { email, fullName } = params
+		const { attachment } = params
+
+		if (email && fullName) {
+			const encEmail = Encrypt(email, iv)
+			const encFullName = Encrypt(fullName, iv)
+
+			email = encEmail.content
+			fullName = encFullName.content
 		}
+
+		return { email, fullName, attachment }
 	}
 }
