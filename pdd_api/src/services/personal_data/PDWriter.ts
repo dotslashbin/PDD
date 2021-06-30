@@ -29,12 +29,16 @@ export default class PDWriter {
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	private static getEncryptedValues(params: Payload, iv: any): Payload {
-		let { email, fullName } = params
-		const { attachment } = params
+		let { email, fullName, attachment } = params
 
 		if (email && fullName) {
 			const encEmail = Encrypt(email, iv)
 			const encFullName = Encrypt(fullName, iv)
+
+			if (attachment) {
+				const encAttachment = Encrypt(attachment, iv)
+				attachment = encAttachment.content
+			}
 
 			email = encEmail.content
 			fullName = encFullName.content
