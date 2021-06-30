@@ -1,4 +1,5 @@
 export type Payload = {
 	email: string
-	name: string
+	fullName: string
+	attachment?: string
 }

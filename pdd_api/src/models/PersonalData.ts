@@ -11,5 +11,8 @@ export class PersonalData {
 	email!: string
 
 	@prop({ required: true })
-	name!: string
+	fullName!: string
+
+	@prop()
+	attachment!: string
 }

@@ -2,12 +2,16 @@ import axios from 'axios'
 
 export default class PersonalDataSelector {
 	static async Create(
-		name: string,
+		fullName: string,
 		email: string,
 		attachment: string
 	): Promise<any> {
 		return axios
-			.post('http://localhost:3001/personal-data', { name, email, attachment })
+			.post('http://localhost:3001/personal-data', {
+				fullName,
+				email,
+				attachment,
+			})
 			.then((result) => result)
 			.catch((error) => {
 				console.error(`Axios error: ${error}`)
