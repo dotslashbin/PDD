@@ -36,7 +36,6 @@ export default class PDWriter {
 				model
 			)
 			.then((result: any) => {
-				// TODO: chante the 5 into a dynamic input
 				const token = TokenGenerator.Generate(result._id, expiry, secretKey)
 				return { personal_data: result, token }
 			})
