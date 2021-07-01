@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
+import Blacklister from '../services/auth/Blacklister'
 import { ReturnError } from '../helpers/Response'
 import TokenValidator from '../services/auth/TokenValidator'
+import MongoWriter from '../db/Mongodb/MongoWriter'
 
 /**
  * Authentication middleware.
@@ -36,6 +38,8 @@ export const AuthenticateToken = (
 		}
 
 		request.query.recordId = tokenValidationResult.session.recordId
+
+		dumpTokenToBlacklist(token)
 	}
 
 	/**
@@ -53,4 +57,9 @@ export const AuthenticateToken = (
 	 */
 
 	next()
+}
+
+const dumpTokenToBlacklist = (token: string): void => {
+	const db = new MongoWriter()
+	Blacklister.AddToList(token, db)
 }
