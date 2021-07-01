@@ -8,8 +8,11 @@ export async function Create(
 	request: Request,
 	response: Response
 ): Promise<void> {
-	const { email, fullName, attachment } = request.body
+	const { email, fullName, attachment, expiry } = request.body
 	const db = new MongoWriter()
-	const result = await PDWriter.Create({ email, fullName, attachment }, db)
+	const result = await PDWriter.Create(
+		{ email, fullName, attachment, expiry },
+		db
+	)
 	ReturnSuccess(201, response, 'create', result, 'do this')
 }

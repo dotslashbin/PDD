@@ -22,6 +22,8 @@ export default class PDWriter {
 			secretKey
 		)
 
+		const { expiry } = params
+
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		return db
 			.Save(
@@ -35,7 +37,7 @@ export default class PDWriter {
 			)
 			.then((result: any) => {
 				// TODO: chante the 5 into a dynamic input
-				const token = TokenGenerator.Generate(result._id, 5, secretKey)
+				const token = TokenGenerator.Generate(result._id, expiry, secretKey)
 				return { personal_data: result, token }
 			})
 			.catch((error: any) => error)
@@ -46,7 +48,7 @@ export default class PDWriter {
 		params: Payload,
 		iv: any,
 		secretKey: string
-	): Payload {
+	): { email: string; fullName: string; attachment: any } {
 		let { email, fullName, attachment } = params
 
 		if (email && fullName) {
