@@ -4,10 +4,11 @@ import { getModelForClass } from '@typegoose/typegoose'
 import { PersonalData } from '../../models/PersonalData'
 import { Encrypt, GenerateSecretKey } from '../../helpers/Utilities'
 import crypto from 'crypto'
+import TokenGenerator from '../auth/TokenGenerator'
 
 export default class PDWriter {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	static async Create(params: Payload, db: DBWriter): Promise<any> {
+	static Create(params: Payload, db: DBWriter): Promise<any> {
 		const model = getModelForClass(PersonalData)
 		const iv = crypto.randomBytes(16)
 
@@ -32,6 +33,11 @@ export default class PDWriter {
 				},
 				model
 			)
+			.then((result: any) => {
+				// TODO: chante the 5 into a dynamic input
+				const token = TokenGenerator.Generate(result._id, 5, secretKey)
+				return { personal_data: result, token }
+			})
 			.catch((error: any) => error)
 	}
 
