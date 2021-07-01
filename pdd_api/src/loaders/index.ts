@@ -2,6 +2,7 @@ import expressLoader from './Routes'
 import cors from 'cors'
 import helmet from 'helmet'
 import mongoose from 'mongoose'
+import { AuthenticateToken } from '../middlewares/Authentication'
 
 /**
  * A function that loads the middlewares for express AND express itself
@@ -16,6 +17,9 @@ export default async function (expressApp: any): Promise<any> {
 
 	expressApp.use(cors())
 	expressApp.use(helmet())
+
+	// Middlewares
+	expressApp.use(AuthenticateToken)
 
 	// Express
 	await expressLoader({ app: expressApp })

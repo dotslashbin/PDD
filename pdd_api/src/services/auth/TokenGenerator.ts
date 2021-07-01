@@ -1,4 +1,5 @@
-import { EncodeResult, Session } from '../../structures/interfaces'
+import { Session } from '../../structures/interfaces'
+import { EncodeResult } from '../../structures/types'
 import { encode } from 'jwt-simple'
 
 export default class TokenGenerator {

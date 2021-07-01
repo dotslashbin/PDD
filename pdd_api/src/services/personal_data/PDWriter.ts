@@ -1,16 +1,16 @@
 import { DBWriter } from '../../structures/interfaces'
-import { Payload } from '../../structures/types'
+import { PDDataPayload } from '../../structures/types'
 import { getModelForClass } from '@typegoose/typegoose'
 import { PersonalData } from '../../models/PersonalData'
 import { Encrypt, GenerateSecretKey } from '../../helpers/Utilities'
-import crypto from 'crypto'
 import TokenGenerator from '../auth/TokenGenerator'
+import { DEFAULT_IV } from '../../config/app'
 
 export default class PDWriter {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	static Create(params: Payload, db: DBWriter): Promise<any> {
+	static Create(params: PDDataPayload, db: DBWriter): Promise<any> {
 		const model = getModelForClass(PersonalData)
-		const iv = crypto.randomBytes(16)
+		const iv = DEFAULT_IV
 
 		/**
 		 * Generating the secret to be used for the encryption and generating the token
@@ -31,20 +31,19 @@ export default class PDWriter {
 					email,
 					fullName,
 					attachment,
-					iv,
 				},
 				model
 			)
 			.then((result: any) => {
-				const token = TokenGenerator.Generate(result._id, expiry, secretKey)
-				return { personal_data: result, token }
+				const session = TokenGenerator.Generate(result._id, expiry, secretKey)
+				return { personal_data: result, session, secretKey }
 			})
 			.catch((error: any) => error)
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	private static getEncryptedValues(
-		params: Payload,
+		params: PDDataPayload,
 		iv: any,
 		secretKey: string
 	): { email: string; fullName: string; attachment: any } {

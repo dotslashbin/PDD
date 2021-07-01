@@ -22,3 +22,25 @@ export const ReturnSuccess = (
 	response.status(status)
 	response.json(returnFormat)
 }
+
+/**
+ * Wrapper for Error response
+ * @param status
+ * @param response
+ * @param data
+ */
+export const ReturnError = (
+	status: number,
+	response: Response,
+	data: any,
+	message: string
+): void => {
+	const returnFormat = {
+		message,
+		error: data,
+		status,
+	}
+
+	response.status(status)
+	response.json(returnFormat)
+}
