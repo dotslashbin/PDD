@@ -3,14 +3,15 @@ import { PDDataPayload } from '../../structures/types'
 import { getModelForClass } from '@typegoose/typegoose'
 import { PersonalData } from '../../models/PersonalData'
 import { Encrypt, GenerateSecretKey } from '../../helpers/Utilities'
-import crypto from 'crypto'
+// import crypto from 'crypto'
 import TokenGenerator from '../auth/TokenGenerator'
+import { DEFAULT_IV } from '../../config/app'
 
 export default class PDWriter {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static Create(params: PDDataPayload, db: DBWriter): Promise<any> {
 		const model = getModelForClass(PersonalData)
-		const iv = crypto.randomBytes(16)
+		const iv = DEFAULT_IV
 
 		/**
 		 * Generating the secret to be used for the encryption and generating the token
@@ -31,7 +32,6 @@ export default class PDWriter {
 					email,
 					fullName,
 					attachment,
-					iv,
 				},
 				model
 			)
