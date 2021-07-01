@@ -8,15 +8,18 @@ import TokenValidator from '../auth/TokenValidator'
 
 export default class PDReader {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	static Fetch(params: PDQueryPayload, db: DBReader): Promise<any> {
+	static Fetch(
+		params: PDQueryPayload,
+		db: DBReader
+	): Promise<any> | { errors: string } {
 		const { token, secretKey } = params
 		const model = getModelForClass(PersonalData)
-		const decodedToken = TokenValidator.Decode(token, secretKey)
+		const tokenValidationResult = TokenValidator.Decode(token, secretKey)
 
-		if (decodedToken.type === 'valid') {
+		if (tokenValidationResult.type === 'valid') {
 			return (
 				db
-					.Fetch(decodedToken.session.recordId, model)
+					.Fetch(tokenValidationResult.session.recordId, model)
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					.then((result: any) => {
 						const emailHash: Hash = {
@@ -44,9 +47,7 @@ export default class PDReader {
 					.catch((error: any) => error)
 			)
 		} else {
-			// TODO: do something with invalid token
-			console.log('you are here')
-			return decodedToken
+			return { errors: tokenValidationResult.type }
 		}
 	}
 }

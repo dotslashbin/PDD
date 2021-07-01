@@ -17,8 +17,6 @@ export default class TokenValidator {
 		} catch (_e) {
 			const e: Error = _e
 
-			console.log(e)
-
 			if (
 				e.message === 'No token supplied' ||
 				e.message === 'Not enough or too many segments'
