@@ -10,7 +10,6 @@ export interface DBWriter extends DBConnector {
 	Save(params: any, model: any): any
 }
 
-// export interface DBReader {
-// 	FetchOne(params: any): any
-// 	Fetch(params: any): any
-// }
+export interface DBReader extends DBConnector {
+	Fetch(id: string, model: any): any
+}
