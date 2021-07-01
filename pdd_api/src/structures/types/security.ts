@@ -4,7 +4,7 @@ import { Session } from '../interfaces'
  * Definition of a hash
  */
 export type Hash = {
-	iv: string
+	iv: any
 	content: string
 }
 
