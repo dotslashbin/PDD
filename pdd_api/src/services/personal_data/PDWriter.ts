@@ -37,7 +37,7 @@ export default class PDWriter {
 			)
 			.then((result: any) => {
 				const session = TokenGenerator.Generate(result._id, expiry, secretKey)
-				return { personal_data: result, session, secret: secretKey }
+				return { personal_data: result, session, secretKey }
 			})
 			.catch((error: any) => error)
 	}
