@@ -10,5 +10,5 @@ export type PDDataPayload = {
 
 export type PDQueryPayload = {
 	token: any
-	secret: any
+	secretKey: any
 }
