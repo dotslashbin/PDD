@@ -13,6 +13,5 @@ export default ({ app }: { app: express.Application }): void => {
 	})
 
 	app.get('/personal-data', express.urlencoded({ extended: true }), Fetch)
-
 	app.post('/personal-data', express.json({ limit: '500kb' }), Create)
 }
