@@ -6,13 +6,20 @@ export async function Fetch(
 	request: Request,
 	response: Response
 ): Promise<void> {
-	const { token, secretKey } = request.query
+
+	const { recordId, secretKey } = request.query
 	const db = new MongoReader()
-	const result = await PDReader.Fetch({ token, secretKey }, db)
+	const result = await PDReader.Fetch({ recordId, secretKey }, db)
 
 	if (result.errors) {
 		ReturnError(401, response, result.errors, 'Your token is no longer active.')
 	} else {
-		ReturnSuccess(200, response, 'fetch', result, 'Successfully fetched record.')
+		ReturnSuccess(
+			200,
+			response,
+			'fetch',
+			result,
+			'Successfully fetched record.'
+		)
 	}
 }
