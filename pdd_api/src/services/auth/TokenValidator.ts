@@ -1,10 +1,10 @@
 import { decode } from 'jwt-simple'
+import { DecodeResult } from '../../structures/types'
 import { Session } from '../../structures/interfaces'
 // import { DecodeResult } from '../../structures/types'
 
 export default class TokenValidator {
-	// TODO: change to return DecodeResult
-	static Decode(token: string, secretKey: string): any {
+	static Decode(token: string, secretKey: string): DecodeResult {
 		let result: Session
 
 		try {

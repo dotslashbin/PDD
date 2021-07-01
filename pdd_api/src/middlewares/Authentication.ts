@@ -35,13 +35,8 @@ export const AuthenticateToken = (
 			return
 		}
 
-
-
 		request.query.recordId = tokenValidationResult.session.recordId
-
 	}
-
-	// TODO: check for token expiry
 
 	/**
 	if (

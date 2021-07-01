@@ -3,7 +3,6 @@ import { PDDataPayload } from '../../structures/types'
 import { getModelForClass } from '@typegoose/typegoose'
 import { PersonalData } from '../../models/PersonalData'
 import { Encrypt, GenerateSecretKey } from '../../helpers/Utilities'
-// import crypto from 'crypto'
 import TokenGenerator from '../auth/TokenGenerator'
 import { DEFAULT_IV } from '../../config/app'
 
