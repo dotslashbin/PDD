@@ -2,7 +2,7 @@ import { DBWriter } from '../../structures/interfaces'
 import { Payload } from '../../structures/types'
 import { getModelForClass } from '@typegoose/typegoose'
 import { PersonalData } from '../../models/PersonalData'
-import { Encrypt } from '../../helpers/Utilities'
+import { Encrypt, GenerateSecretKey } from '../../helpers/Utilities'
 import crypto from 'crypto'
 
 export default class PDWriter {
@@ -32,11 +32,12 @@ export default class PDWriter {
 		let { email, fullName, attachment } = params
 
 		if (email && fullName) {
-			const encEmail = Encrypt(email, iv)
-			const encFullName = Encrypt(fullName, iv)
+			const secretKey = GenerateSecretKey()
+			const encEmail = Encrypt(email, iv, secretKey)
+			const encFullName = Encrypt(fullName, iv, secretKey)
 
 			if (attachment) {
-				const encAttachment = Encrypt(attachment, iv)
+				const encAttachment = Encrypt(attachment, iv, secretKey)
 				attachment = encAttachment.content
 			}
 
