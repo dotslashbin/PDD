@@ -1,6 +1,6 @@
 import express from 'express'
 import { VERSION } from '../config/app'
-import { Create } from '../handlers/POST'
+import { Create, Fetch } from '../handlers'
 
 /**
  * Route definitions with references to handlers
@@ -11,6 +11,8 @@ export default ({ app }: { app: express.Application }): void => {
 		response.status(200)
 		response.json({ body: request.body, version: VERSION })
 	})
+
+	app.get('/personal-data', express.urlencoded({ extended: true }), Fetch)
 
 	app.post('/personal-data', express.json({ limit: '500kb' }), Create)
 }
