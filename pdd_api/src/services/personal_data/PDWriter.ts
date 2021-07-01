@@ -11,7 +11,15 @@ export default class PDWriter {
 		const model = getModelForClass(PersonalData)
 		const iv = crypto.randomBytes(16)
 
-		const { email, fullName, attachment } = this.getEncryptedValues(params, iv)
+		/**
+		 * Generating the secret to be used for the encryption and generating the token
+		 */
+		const secretKey = GenerateSecretKey()
+		const { email, fullName, attachment } = this.getEncryptedValues(
+			params,
+			iv,
+			secretKey
+		)
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		return db
@@ -28,11 +36,14 @@ export default class PDWriter {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-	private static getEncryptedValues(params: Payload, iv: any): Payload {
+	private static getEncryptedValues(
+		params: Payload,
+		iv: any,
+		secretKey: string
+	): Payload {
 		let { email, fullName, attachment } = params
 
 		if (email && fullName) {
-			const secretKey = GenerateSecretKey()
 			const encEmail = Encrypt(email, iv, secretKey)
 			const encFullName = Encrypt(fullName, iv, secretKey)
 
