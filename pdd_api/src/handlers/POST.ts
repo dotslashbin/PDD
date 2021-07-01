@@ -3,6 +3,7 @@ import PDWriter from '../services/personal_data/PDWriter'
 import { ReturnSuccess } from '../helpers/Response'
 import MongoWriter from '../db/Mongodb/MongoWriter'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function Create(
 	request: Request,
 	response: Response
