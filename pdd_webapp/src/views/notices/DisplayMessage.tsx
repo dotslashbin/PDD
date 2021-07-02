@@ -8,7 +8,10 @@ const useStyles = makeStyles(() => ({
 		marginBottom: '5px'
 	}, 
 	message: {
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+	},
+	alertContainer: {
+		minWidth: '100%'
 	}
 }))
 
@@ -17,7 +20,7 @@ export default function DisplayMessage(props: any): any {
 	const classes = useStyles()
 
 	return (
-		<div>
+		<div className={classes.alertContainer}>
 			<Alert severity={props.severity}>
 				<AlertTitle>{props.severity.toUpperCase() }</AlertTitle>
 				<div className={classes.messagesContainer}>
