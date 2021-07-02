@@ -2,15 +2,15 @@ import axios from 'axios'
 
 export default class PersonalDataSelector {
 	static async Create(
-		fullName: string,
 		email: string,
+		fullName: string,
 		expiry: string,
 		attachment: string
 	): Promise<any> {
 		return axios
 			.post('http://localhost:3001/personal-data', {
-				fullName,
 				email,
+				fullName,
 				expiry,
 				attachment,
 			})
