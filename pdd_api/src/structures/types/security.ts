@@ -24,4 +24,6 @@ export type DecodeResult =
 	| { type: 'integrity-error' }
 	| { type: 'invalid-token' }
 
-export type ExpirationStatus = 'expired' | 'active' | 'grace'
+export type ExpirationStatus = 'expired' | 'active'
+
+export type TokenSession = { recordId: string; expires: number }

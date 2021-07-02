@@ -1,10 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
-import TokenBlackListWriter from '../services/auth/TokenBlacklistWriter'
 import { ReturnError } from '../helpers/Response'
+import { HandleToken, IsTokenBlacklisted } from '../helpers/TokenHandlers'
 import TokenValidator from '../services/auth/TokenValidator'
-import MongoWriter from '../db/Mongodb/MongoWriter'
-import { MongoReader } from '../db/Mongodb/MongoReader'
-import TokenBlacklistReader from '../services/auth/TokenBlacklistReader'
 
 /**
  * Authentication middleware.
@@ -26,7 +23,7 @@ export const AuthenticateToken = async (
 		token = token + ''
 		secretKey = secretKey + ''
 
-		if ((await isTokenBlacklsited(token)) === true) {
+		if ((await IsTokenBlacklisted(token)) === true) {
 			ReturnError(
 				401,
 				response,
@@ -50,7 +47,7 @@ export const AuthenticateToken = async (
 
 		request.query.recordId = tokenValidationResult.session.recordId
 
-		dumpTokenToBlacklist(token)
+		HandleToken(token, tokenValidationResult.session)
 	}
 
 	/**
@@ -68,23 +65,4 @@ export const AuthenticateToken = async (
 	 */
 
 	next()
-}
-
-/**
- *
- * @param token Saves a token into the blacklist
- */
-const dumpTokenToBlacklist = (token: string): void => {
-	const db = new MongoWriter()
-	TokenBlackListWriter.AddToList(token, db)
-}
-
-/**
- *
- * @param token Checks to see if token is blacklisted
- * @returns
- */
-const isTokenBlacklsited = (token: string): boolean => {
-	const db = new MongoReader()
-	return TokenBlacklistReader.IsBlacklistedToken(token, db)
 }
