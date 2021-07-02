@@ -12,3 +12,8 @@ export type PDQueryPayload = {
 	recordId: any
 	secretKey: any
 }
+
+export type TokenSearchPayload = {
+	key: string
+	value: string
+}
