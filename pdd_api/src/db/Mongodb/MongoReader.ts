@@ -1,4 +1,3 @@
-import { SearchPayload } from '../../structures/types'
 import { DBReader } from '../../structures/interfaces'
 import DBCore from '../DBCore'
 
@@ -11,11 +10,10 @@ export class MongoReader extends DBCore implements DBReader {
 		}
 	}
 
-	Search(params: SearchPayload, model: any): any {
-		const { key, value } = params
-
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	Search(params: any, model: any): any {
 		try {
-			return model.find({ key: value })
+			return model.find(params)
 		} catch (error) {
 			console.error(error)
 		}
