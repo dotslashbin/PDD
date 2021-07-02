@@ -2,7 +2,10 @@ import { getModelForClass } from '@typegoose/typegoose'
 import { Blacklist } from '../../models/Blacklist'
 import { DBWriter } from '../../structures/interfaces'
 
-export default class Blacklister {
+/**
+ * Class that is responssible for writing a token into the blacklist
+ */
+export default class TokenBlackListWriter {
 	static AddToList(token: string, db: DBWriter): void {
 		const model = getModelForClass(Blacklist)
 
