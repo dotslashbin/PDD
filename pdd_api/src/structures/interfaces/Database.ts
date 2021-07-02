@@ -1,3 +1,5 @@
+import { TokenSearchPayload } from '../types'
+
 /**
  * This file contains the the interface definitions
  * for the database classes
@@ -12,4 +14,5 @@ export interface DBWriter extends DBConnector {
 
 export interface DBReader extends DBConnector {
 	Fetch(id: string, model: any): any
+	Search(params: any, model: any): any
 }
