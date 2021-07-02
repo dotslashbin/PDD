@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography, TextField } from '@material-ui/core'
 import PersonalDataSelector from '../../selectors/PersonalData'
 import DisplayMessage from '../notices/DisplayMessage'
+import { GetMessagesArray } from '../../helpers/Messages'
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -62,7 +63,6 @@ export default function CreateForm(): any {
 	const submitForm = async () => {
 		try {
 			const result = await PersonalDataSelector.Create(email, fullName, expiry, attachement)	
-			console.log(result)
 			if (result.error) {
 				setMessage(result.message)
 				setSeverity('error')
@@ -130,7 +130,7 @@ export default function CreateForm(): any {
             Submit
 					</Button>
 				</form>
-				<DisplayMessage message={message} severity={serverity}/>
+				<DisplayMessage messages={GetMessagesArray(message)} severity={serverity}/>
 			</div>
 		</Container>
 	)
