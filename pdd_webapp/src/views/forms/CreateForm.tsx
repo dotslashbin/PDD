@@ -66,10 +66,12 @@ export default function CreateForm(): any {
 			if (result.error) {
 				setMessage(result.message)
 				setSeverity('error')
+			} else {
+				setMessage(result.data.message)
+				setSeverity('info')
 			}
 
-			setMessage(result.data.message)
-			setSeverity('info')
+			
 		} catch (error) {
 			console.error(`There is an error: ${error}`)
 		}
