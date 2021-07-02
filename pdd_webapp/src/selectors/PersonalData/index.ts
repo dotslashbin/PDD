@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 
 export default class PersonalDataSelector {
 	static async Create(
@@ -18,7 +18,6 @@ export default class PersonalDataSelector {
 				return result
 			})
 			.catch((error) => {
-				console.log(error.response.data)
 				const { status, message } = error.response.data
 				return { error:true, status, message }
 			})
