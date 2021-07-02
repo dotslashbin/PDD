@@ -2,11 +2,21 @@ import { DBWriter } from '../../structures/interfaces'
 import { PDDataPayload } from '../../structures/types'
 import { getModelForClass } from '@typegoose/typegoose'
 import { PersonalData } from '../../models/PersonalData'
-import { Encrypt, GenerateSecretKey } from '../../helpers/Utilities'
+import {
+	Encrypt,
+	GenerateSecretKey,
+	GetExpiryTimestamp,
+} from '../../helpers/Utilities'
 import TokenGenerator from '../auth/TokenGenerator'
 import { DEFAULT_IV } from '../../config/app'
 
 export default class PDWriter {
+	/**
+	 * Executes the process of creating a record
+	 * @param params
+	 * @param db
+	 * @returns
+	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static Create(params: PDDataPayload, db: DBWriter): Promise<any> {
 		const model = getModelForClass(PersonalData)
@@ -23,6 +33,7 @@ export default class PDWriter {
 		)
 
 		const { expiry } = params
+		const timestampWithAddedMintues = GetExpiryTimestamp(expiry)
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		return db
@@ -35,12 +46,23 @@ export default class PDWriter {
 				model
 			)
 			.then((result: any) => {
-				const session = TokenGenerator.Generate(result._id, expiry, secretKey)
+				const session = TokenGenerator.Generate(
+					result._id,
+					expiry === undefined ? 0 : timestampWithAddedMintues,
+					secretKey
+				)
 				return { personal_data: result, session, secretKey }
 			})
 			.catch((error: any) => error)
 	}
 
+	/**
+	 * Responsible for encypting the fields for the data to be saved
+	 * @param params
+	 * @param iv
+	 * @param secretKey
+	 * @returns
+	 */
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	private static getEncryptedValues(
 		params: PDDataPayload,

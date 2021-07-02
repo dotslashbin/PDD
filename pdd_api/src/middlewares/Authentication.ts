@@ -1,10 +1,17 @@
 import { Request, Response, NextFunction } from 'express'
-import TokenBlackListWriter from '../services/auth/TokenBlacklistWriter'
 import { ReturnError } from '../helpers/Response'
+import {
+	GetExpirationStatus,
+	HandleToken,
+	IsTokenBlacklisted,
+} from '../helpers/TokenHandlers'
 import TokenValidator from '../services/auth/TokenValidator'
-import MongoWriter from '../db/Mongodb/MongoWriter'
-import { MongoReader } from '../db/Mongodb/MongoReader'
-import TokenBlacklistReader from '../services/auth/TokenBlacklistReader'
+
+const BLACKLISTED_TOKEN_TYPE = 'blacklisted-token'
+const BLACKLISTED_TOKEN_MESSAGE =
+	'Your token has expired or reached the maximum allowable usage'
+const INVALID_TOKEN_MESSAGE =
+	'Your token may be missing or could not be validated'
 
 /**
  * Authentication middleware.
@@ -26,23 +33,41 @@ export const AuthenticateToken = async (
 		token = token + ''
 		secretKey = secretKey + ''
 
-		if ((await isTokenBlacklsited(token)) === true) {
+		// Step 1: Check if token has been black listed
+		// Check for blacklisted token
+		if ((await IsTokenBlacklisted(token)) === true) {
 			ReturnError(
 				401,
 				response,
-				'blacklisted-token',
-				'Your token is no longer active.'
+				BLACKLISTED_TOKEN_TYPE,
+				BLACKLISTED_TOKEN_MESSAGE
 			)
 			return
 		}
 
+		// Decodes the token if it has passed
 		const tokenValidationResult = TokenValidator.Decode(token, secretKey)
+
+		// Step 2: Checks for token validity
+		// Checks for token validity
 		if (tokenValidationResult.type !== 'valid') {
 			ReturnError(
 				401,
 				response,
 				tokenValidationResult.type,
-				'Your token is no longer active.'
+				INVALID_TOKEN_MESSAGE
+			)
+
+			return
+		}
+
+		// Check to see if the token used has already expired
+		if (GetExpirationStatus(tokenValidationResult.session) === 'expired') {
+			ReturnError(
+				401,
+				response,
+				BLACKLISTED_TOKEN_TYPE,
+				BLACKLISTED_TOKEN_MESSAGE
 			)
 
 			return
@@ -50,41 +75,8 @@ export const AuthenticateToken = async (
 
 		request.query.recordId = tokenValidationResult.session.recordId
 
-		dumpTokenToBlacklist(token)
+		HandleToken(token, tokenValidationResult.session)
 	}
-
-	/**
-	if (
-		decodedSession.type === 'integrity-error' ||
-		decodedSession.type === 'invalid-token'
-	) {
-		Unauthorized(`Token validaton failed: ${decodedSession.type}`, response)
-	}
-
-	response.locals = {
-		...response.locals,
-		session: decodedSession,
-	}
-	 */
 
 	next()
-}
-
-/**
- *
- * @param token Saves a token into the blacklist
- */
-const dumpTokenToBlacklist = (token: string): void => {
-	const db = new MongoWriter()
-	TokenBlackListWriter.AddToList(token, db)
-}
-
-/**
- *
- * @param token Checks to see if token is blacklisted
- * @returns
- */
-const isTokenBlacklsited = (token: string): boolean => {
-	const db = new MongoReader()
-	return TokenBlacklistReader.IsBlacklistedToken(token, db)
 }
