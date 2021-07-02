@@ -1,5 +1,3 @@
-import { TokenSearchPayload } from '../types'
-
 /**
  * This file contains the the interface definitions
  * for the database classes
