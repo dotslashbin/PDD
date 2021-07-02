@@ -13,7 +13,7 @@ export type PDQueryPayload = {
 	secretKey: any
 }
 
-export type SearchPayload = {
+export type TokenSearchPayload = {
 	key: string
 	value: string
 }
