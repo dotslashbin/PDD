@@ -25,12 +25,12 @@ export const IsTokenBlacklisted = (token: string): boolean => {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const HandleToken = (token: string, session: TokenSession) => {
-	if (session.expires <= 0 || getExpirationStatus(session) === 'expired') {
+	if (session.expires <= 0 || GetExpirationStatus(session) === 'expired') {
 		DumpTokenToBlacklist(token)
 	}
 }
 
-export function getExpirationStatus(session: TokenSession): ExpirationStatus {
+export function GetExpirationStatus(session: TokenSession): ExpirationStatus {
 	const now = Date.now()
 	return session.expires > now ? 'active' : 'expired'
 }

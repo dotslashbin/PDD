@@ -23,23 +23,29 @@ export const AuthenticateToken = async (
 		token = token + ''
 		secretKey = secretKey + ''
 
+		// Step 1: Check if token has been black listed
+		// Check for blacklisted token
 		if ((await IsTokenBlacklisted(token)) === true) {
 			ReturnError(
 				401,
 				response,
 				'blacklisted-token',
-				'Your token is no longer active.'
+				'Your token has reached the maximum allowable usage'
 			)
 			return
 		}
 
+		// Decodes the token if it has passed
 		const tokenValidationResult = TokenValidator.Decode(token, secretKey)
+
+		// Step 2: Checks for token validity
+		// Checks for token validity
 		if (tokenValidationResult.type !== 'valid') {
 			ReturnError(
 				401,
 				response,
 				tokenValidationResult.type,
-				'Your token is no longer active.'
+				'Your token may be missing or could not be validated'
 			)
 
 			return
@@ -50,19 +56,6 @@ export const AuthenticateToken = async (
 		HandleToken(token, tokenValidationResult.session)
 	}
 
-	/**
-	if (
-		decodedSession.type === 'integrity-error' ||
-		decodedSession.type === 'invalid-token'
-	) {
-		Unauthorized(`Token validaton failed: ${decodedSession.type}`, response)
-	}
-
-	response.locals = {
-		...response.locals,
-		session: decodedSession,
-	}
-	 */
-
 	next()
+	
 }
