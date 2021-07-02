@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography, TextField } from '@material-ui/core'
 import PersonalDataSelector from '../../selectors/PersonalData'
 import DisplayMessage from '../notices/DisplayMessage'
+import SavedRecord from '../lists/SavedRecord'
 import { GetMessagesArray } from '../../helpers/Messages'
 
 const useStyles = makeStyles((theme) => ({
@@ -67,8 +68,9 @@ export default function CreateForm(): any {
 				setMessage(result.message)
 				setSeverity('error')
 			} else {
-				setMessage(result.data.message)
+				setMessage(result.message)
 				setSeverity('info')
+				console.log(result.data)
 			}
 
 			
@@ -133,6 +135,9 @@ export default function CreateForm(): any {
 					</Button>
 				</form>
 				<DisplayMessage messages={GetMessagesArray(message)} severity={serverity}/>
+			</div>
+			<div>
+				<SavedRecord />
 			</div>
 		</Container>
 	)

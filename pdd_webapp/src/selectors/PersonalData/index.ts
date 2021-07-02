@@ -15,7 +15,7 @@ export default class PersonalDataSelector {
 				attachment,
 			})
 			.then((result) => {
-				return result
+				return result.data
 			})
 			.catch((error) => {
 				const { status, message } = error.response.data
