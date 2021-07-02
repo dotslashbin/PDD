@@ -1,7 +1,17 @@
 import { Request, Response, NextFunction } from 'express'
 import { ReturnError } from '../helpers/Response'
-import { HandleToken, IsTokenBlacklisted } from '../helpers/TokenHandlers'
+import {
+	GetExpirationStatus,
+	HandleToken,
+	IsTokenBlacklisted,
+} from '../helpers/TokenHandlers'
 import TokenValidator from '../services/auth/TokenValidator'
+
+const BLACKLISTED_TOKEN_TYPE = 'blacklisted-token'
+const BLACKLISTED_TOKEN_MESSAGE =
+	'Your token has expired or reached the maximum allowable usage'
+const INVALID_TOKEN_MESSAGE =
+	'Your token may be missing or could not be validated'
 
 /**
  * Authentication middleware.
@@ -29,8 +39,8 @@ export const AuthenticateToken = async (
 			ReturnError(
 				401,
 				response,
-				'blacklisted-token',
-				'Your token has reached the maximum allowable usage'
+				BLACKLISTED_TOKEN_TYPE,
+				BLACKLISTED_TOKEN_MESSAGE
 			)
 			return
 		}
@@ -45,7 +55,19 @@ export const AuthenticateToken = async (
 				401,
 				response,
 				tokenValidationResult.type,
-				'Your token may be missing or could not be validated'
+				INVALID_TOKEN_MESSAGE
+			)
+
+			return
+		}
+
+		// Check to see if the token used has already expired
+		if (GetExpirationStatus(tokenValidationResult.session) === 'expired') {
+			ReturnError(
+				401,
+				response,
+				BLACKLISTED_TOKEN_TYPE,
+				BLACKLISTED_TOKEN_MESSAGE
 			)
 
 			return
@@ -57,5 +79,4 @@ export const AuthenticateToken = async (
 	}
 
 	next()
-	
 }
