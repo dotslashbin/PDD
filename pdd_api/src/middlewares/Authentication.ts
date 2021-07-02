@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import Blacklister from '../services/auth/Blacklister'
+import TokenBlackListWriter from '../services/auth/TokenBlacklistWriter'
 import { ReturnError } from '../helpers/Response'
 import TokenValidator from '../services/auth/TokenValidator'
 import MongoWriter from '../db/Mongodb/MongoWriter'
@@ -61,5 +61,5 @@ export const AuthenticateToken = (
 
 const dumpTokenToBlacklist = (token: string): void => {
 	const db = new MongoWriter()
-	Blacklister.AddToList(token, db)
+	TokenBlackListWriter.AddToList(token, db)
 }
