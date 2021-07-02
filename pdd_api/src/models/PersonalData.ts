@@ -1,5 +1,4 @@
 import { prop } from '@typegoose/typegoose'
-
 /**
  * Data model definitions with validation.
  *
@@ -7,7 +6,9 @@ import { prop } from '@typegoose/typegoose'
  */
 
 export class PersonalData {
-	@prop({ required: [true, 'Email is required'] })
+	@prop({
+		required: [true, 'Email is required'],
+	})
 	email!: string
 
 	@prop({ required: [true, 'Full Name is required'] })

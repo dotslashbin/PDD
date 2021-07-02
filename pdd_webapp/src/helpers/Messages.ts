@@ -1,3 +1,8 @@
+/**
+ * Returns an array of messages for the alert
+ * @param input
+ * @returns
+ */
 export const GetMessagesArray = (input: string): string[] => {
 	input = input.replace('PersonalData validation failed:', '')
 	const container = input.split(',')
