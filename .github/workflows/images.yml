@@ -35,4 +35,4 @@ jobs:
       working-directory: pdd_api
 
     - name: Pushing image to registry
-      run: docker push ${{ secrets.DOCKER_USER }}
+      run: docker push ${{ secrets.DOCKER_USER }}/pdd_api:latest
