@@ -36,3 +36,14 @@ jobs:
 
     - name: Pushing image to registry
       run: docker push ${{ secrets.DOCKER_USER }}/pdd_api:latest
+
+    - name: Compile pdd_webapp
+      uses: borales/actions-yarn@v2.3.0
+    - run: yarn && yarn build
+      working-directory: pdd_webpp
+
+    - name: Move files to nginx folder
+      run: cp -Rvf pdd_webapp/build nginx/content
+
+    - name: check
+      run: ls -l nginx/
