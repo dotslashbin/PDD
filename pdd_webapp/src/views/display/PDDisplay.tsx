@@ -90,6 +90,9 @@ export default function PDDisplay(props: any): any {
 							<Typography variant="subtitle1">
 								<span className={classes.email}>{personalData.email}</span>
 							</Typography>
+							<Typography>
+								<a href={attachment} download>Download CV</a>
+							</Typography>
 						</CardContent>
 					</Card>
 					<hr />
