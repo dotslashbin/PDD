@@ -8,20 +8,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
     - uses: actions/checkout@v2
     - name: Compile pdd_api
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install && npm install typescript ts-loader ts-node
       working-directory: pdd_api
-      run: tsc -p . 
+
+    - run: tsc -p . 
+      working-directory: pdd_api
+    
     - name: Docker Login
-      working-directory: pdd_api
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         docker login -u DOCKER_USER -P DOCKER_PASSWORD
-    - name: Building the pdd_api image
       working-directory: pdd_api
+
+    - name: Building the pdd_api image
       run: docker build . --tag ${{ secrets.DOCKER_USER }}/pdd_api
+      working-directory: pdd_api
+      
     - name: Pushing image to registry
       run: docker push ${{ secrets.DOCKER_USER }}
