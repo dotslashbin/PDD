@@ -27,15 +27,18 @@ const truncate = (str: string) => {
 	return str.length > 50 ? str.substring(0, 50) + '...' : str	
 }
 
-
+const getShareableLink = (token: string, secretKey: string) => {
+	return window.location.href + `personal-data?token=${token}&secretKey=${secretKey}`
+}
 
 export default function SavedRecord(props: any): any {
 
 	const classes = useStyles()
 
 	const rows = [
-		{ name: 'Token', value: props.token }, 
-		{ name: 'Secret Key', value: props.secretKey }
+		{ type: 'string', name: 'Token', value: props.token }, 
+		{ type: 'string', name: 'Secret Key', value: props.secretKey },
+		{ type: 'link', name: 'Shareable link', value: '' }
 	]
 
 	return(
@@ -54,7 +57,9 @@ export default function SavedRecord(props: any): any {
 								<span>{row.name}</span>
 							</TableCell>
 							<TableCell align="center">
-								<span className={classes.valueDisplay}>{truncate(row.value)}</span>
+								{(row.type === 'string')?
+									<span className={classes.valueDisplay}>{truncate(row.value)}</span>
+									:<a href={getShareableLink(props.token, props.secretKey)}>sharable link</a>}
 							</TableCell>
 						</TableRow>
 					))}
