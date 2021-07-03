@@ -41,6 +41,7 @@ export default function PDDisplay(props: any): any {
 	const [message, setMessage] = useState('')
 	const [severity, setSeverity] = useState('')
 	const [status, setStatus] = useState(0)
+	const [attachment, setAttachment] = useState('')
 	const [personalData, setPersonalData] = useState(personalDataSkeleton)
 
 
@@ -59,8 +60,10 @@ export default function PDDisplay(props: any): any {
 					setMessage(result.data.message)
 					setPersonalData(personalDataSkeleton)
 				} else if (result.status === 200) {
+					
 					setStatus(result.status)
 					setPersonalData(result.data)
+					setAttachment(`data:application/pdf;base64,${result.data.attachment}`)
 				}
 			})
 		}
@@ -92,7 +95,10 @@ export default function PDDisplay(props: any): any {
 					<hr />
 					<Card>
 						<CardContent>
-						
+							<Typography variant="caption">
+								PDF view
+							</Typography>
+							<iframe src={attachment} height="800px" width="100%"></iframe>
 						</CardContent>
 					</Card>
 				</div>
