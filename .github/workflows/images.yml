@@ -37,6 +37,10 @@ jobs:
     - name: Pushing image to registry
       run: docker push ${{ secrets.DOCKER_USER }}/pdd_api:latest
 
+    - name: Cleanup the reactapp 
+      run: rm -Rf package-lock.json node_modules
+      working-directory: pdd_webapp
+
     - name: Compile pdd_webapp
       uses: actions/setup-node@v2
       with:
