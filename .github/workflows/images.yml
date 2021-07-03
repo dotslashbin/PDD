@@ -31,7 +31,7 @@ jobs:
       working-directory: pdd_api
 
     - name: Building the pdd_api image
-      run: docker build . --tag ${{ secrets.DOCKER_USER }}/pdd_api
+      run: docker build . --tag ${{ secrets.DOCKER_USER }}/pdd_api:latest
       working-directory: pdd_api
 
     - name: Pushing image to registry
