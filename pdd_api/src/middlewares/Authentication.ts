@@ -62,7 +62,10 @@ export const AuthenticateToken = async (
 		}
 
 		// Check to see if the token used has already expired
-		if (GetExpirationStatus(tokenValidationResult.session) === 'expired') {
+		if (
+			tokenValidationResult.session.expires !== 0 &&
+			GetExpirationStatus(tokenValidationResult.session) === 'expired'
+		) {
 			ReturnError(
 				401,
 				response,
