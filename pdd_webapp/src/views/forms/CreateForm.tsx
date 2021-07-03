@@ -4,6 +4,9 @@ import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography, TextField } from '@material-ui/core'
 import PersonalDataSelector from '../../selectors/PersonalData'
+import DisplayMessage from '../notices/DisplayMessage'
+import SavedRecord from '../lists/SavedRecord'
+import { GetMessagesArray } from '../../helpers/Messages'
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -27,7 +30,10 @@ export default function CreateForm(): any {
 
 	const [email, setEmail] = useState('')
 	const [fullName, setFullName] = useState('')
-	const [attachemnt, setAttachment] = useState('')
+	const [expiry, setExpiry] = useState('')
+	const [attachement, setAttachment] = useState('')
+	const [message, setMessage] = useState('')
+	const [serverity, setSeverity] = useState('')
 
 	const updateEmailValue = (value: string) => {
 		setEmail(value)
@@ -37,11 +43,14 @@ export default function CreateForm(): any {
 		setFullName(value)
 	}
 
+	const updateExpiry = (value: string) => {
+		setExpiry(value)
+	}
+
 	const updateAttachment = (e: any) => {
 		e.preventDefault()
 
 		const file = e.target.files[0]
-		console.log('file', file)
 		if (file) {
 			const reader = new FileReader()
 			reader.onload = (readerEvt: any) => {
@@ -54,8 +63,17 @@ export default function CreateForm(): any {
 
 	const submitForm = async () => {
 		try {
-			const result = await PersonalDataSelector.Create(email, fullName, attachemnt)	
-			console.log(result)
+			const result = await PersonalDataSelector.Create(email, fullName, expiry, attachement)	
+			if (result.error) {
+				setMessage(result.message)
+				setSeverity('error')
+			} else {
+				setMessage(result.message)
+				setSeverity('info')
+				console.log(result.data)
+			}
+
+			
 		} catch (error) {
 			console.error(`There is an error: ${error}`)
 		}
@@ -94,6 +112,16 @@ export default function CreateForm(): any {
 						value={fullName}
 						onChange={(input: any) => {updateFullName(input.target.value)}}
 					/>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						fullWidth
+						id="expiry"
+						label="Token expiry (in minutes)"
+						name="expiry"
+						autoComplete="expiry"
+						onChange={(input: any) => {updateExpiry(input.target.value)}}
+					/>
 					<input type="file" name="cv" onChange={updateAttachment} />
 					<Button
 						type="button"
@@ -106,6 +134,10 @@ export default function CreateForm(): any {
             Submit
 					</Button>
 				</form>
+				<DisplayMessage messages={GetMessagesArray(message)} severity={serverity}/>
+			</div>
+			<div>
+				<SavedRecord />
 			</div>
 		</Container>
 	)
