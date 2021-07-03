@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Container, CssBaseline, Button, Typography, TextField, makeStyles } from '@material-ui/core'
+import { Container, CssBaseline, Button, Typography, makeStyles } from '@material-ui/core'
 import PersonalDataSelector from '../../selectors/PersonalData'
 import DisplayMessage from '../notices/DisplayMessage'
 import SavedRecord from '../lists/SavedRecord'
 import { GetMessagesArray } from '../../helpers/Messages'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator' 
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -19,6 +20,13 @@ const useStyles = makeStyles((theme) => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 	},
+	formField: {
+		width: '100%', 
+		marginBottom: '20px'
+	}, 
+	note: {
+		fontStyle: 'italic'
+	}
 }))
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -89,54 +97,57 @@ export default function CreateForm(): any {
 					<Typography component="h1" variant="h5">
 					Please enter your personal data
 					</Typography>
-					<form className={classes.form} noValidate>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							id="email"
-							label="Email Address"
+					<ValidatorForm className={classes.form} onSubmit={() => {submitForm()}}>
+						<TextValidator
+							className={classes.formField}
 							name="email"
-							autoComplete="email"
-							autoFocus
+							label="Email"
+							validators={['required', 'isEmail']}
 							value={email}
+							errorMessages={['Email is required', 'This is not a valid email address']}
 							onChange={(input: any) => {updateEmailValue(input.target.value)}}
 						/>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							id="name"
-							label="Full Name"
+						<TextValidator
+							className={classes.formField}
 							name="name"
-							autoComplete="name"
+							label="Full Name"
+							validators={['required']}
 							value={fullName}
+							errorMessages={['Full name is required']}
 							onChange={(input: any) => {updateFullName(input.target.value)}}
 						/>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							fullWidth
-							id="expiry"
-							label="Token expiry (in minutes)"
+						
+						<TextValidator
+							className={classes.formField} 
 							name="expiry"
-							autoComplete="expiry"
-							onChange={(input: any) => {updateExpiry(input.target.value)}}
+							label="Expiry - in minutes"
+							value={expiry}
+							validators={['matchRegexp:^[0-9]+$']}
+							errorMessages={['You must enter valid numbers only']}
+							onChange={(input:any) => {updateExpiry(input.target.value)}}
 						/>
+						<Typography variant="caption" className={classes.note}>
+							Entering an expiry is <b>optional</b>. Leaving it blank will result to a 
+							single use token
+						</Typography>
+						<br />
+						<br />
+						<br />
+						<Typography variant="subtitle1">
+							Upload your CV
+						</Typography>
+						<br />
 						<input type="file" name="cv" onChange={updateAttachment} />
 						<Button
-							type="button"
+							type="submit"
 							fullWidth
 							variant="contained"
 							color="primary"
 							className={classes.submit}
-							onClick={() => {submitForm()}}
 						>
             Submit
 						</Button>
-					</form>
+					</ValidatorForm>
 					<DisplayMessage messages={GetMessagesArray(message)} severity={serverity}/>
 				</div>
 				<div>

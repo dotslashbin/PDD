@@ -45,7 +45,7 @@ export default class PDWriter {
 			.then((result: any) => {
 				const session = TokenGenerator.Generate(
 					result._id,
-					expiry === undefined ? 0 : timestampWithAddedMintues,
+					!expiry ? 0 : timestampWithAddedMintues,
 					secretKey
 				)
 				return { personal_data: result, session, secretKey }
