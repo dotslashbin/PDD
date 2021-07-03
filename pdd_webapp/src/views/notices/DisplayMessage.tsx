@@ -11,7 +11,8 @@ const useStyles = makeStyles(() => ({
 		fontWeight: 'bold',
 	},
 	alertContainer: {
-		minWidth: '100%'
+		minWidth: '100%',
+		marginBottom: '100px'
 	}
 }))
 

@@ -4,12 +4,17 @@ import { makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHe
 
 const useStyles = makeStyles((theme) => ({
 	tableContainer: {
-		marginTop: '50px', 
+		marginTop: '100px', 
 		width: '100%'
 	},
 	table: {
 		minWidth: 650,
 	},
+	valueDisplay: {
+		overflow: 'hidden', 
+		textOverflow: 'ellipsis',
+		fontWeight: 'bold'
+	}
 }))
 
 const columns = [
@@ -17,6 +22,10 @@ const columns = [
 	{ field: 'data', headerName: 'Data', width: 130 },
 	{ field: 'value', headerName: 'Value', width: 400 },
 ]
+
+const truncate = (str: string) => {
+	return str.length > 50 ? str.substring(0, 50) + '...' : str	
+}
 
 
 
@@ -42,9 +51,11 @@ export default function SavedRecord(props: any): any {
 					{rows.map((row) => (
 						<TableRow key={row.name}>
 							<TableCell component="th" scope="row">
-								{row.name}
+								<span>{row.name}</span>
 							</TableCell>
-							<TableCell align="center">{row.value}</TableCell>
+							<TableCell align="center">
+								<span className={classes.valueDisplay}>{truncate(row.value)}</span>
+							</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
