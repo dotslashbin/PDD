@@ -77,7 +77,7 @@ export default function CreateForm(): any {
 
 			
 		} catch (error) {
-			console.error(`There is an error: ${error}`)
+			console.error(`There is an error in saving the data: ${error}`)
 		}
 	}
 
