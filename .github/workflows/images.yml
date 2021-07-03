@@ -37,11 +37,11 @@ jobs:
     - name: Pushing image to registry
       run: docker push ${{ secrets.DOCKER_USER }}/pdd_api:latest
 
-    - name: Compile pdd_api
+    - name: Compile pdd_webapp
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install && npm install typescript ts-loader ts-node
+    - run: npm install 
       working-directory: pdd_webapp
 
     - run: npm run build
