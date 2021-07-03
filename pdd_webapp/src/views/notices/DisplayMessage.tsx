@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
 	},
 	alertContainer: {
 		minWidth: '100%',
-		marginBottom: '100px'
+		marginBottom: '50px'
 	}
 }))
 

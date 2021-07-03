@@ -1,14 +1,15 @@
 import React from 'react'
 import './App.css'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import CreateForm from './views/forms/CreateForm'
-
-import Container from '@material-ui/core/Container'
+import PDDisplay from './views/display/PDDisplay'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function App(): any {
 	return (
-		<Container className="App">
-			<CreateForm />
-		</Container>
+		<Router>
+			<Route exact path="/" component={CreateForm} />
+			<Route exact path="/view" component={PDDisplay} />
+		</Router>
 	)
 }

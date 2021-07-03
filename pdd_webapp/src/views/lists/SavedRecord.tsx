@@ -28,7 +28,7 @@ const truncate = (str: string) => {
 }
 
 const getShareableLink = (token: string, secretKey: string) => {
-	return window.location.href + `personal-data?token=${token}&secretKey=${secretKey}`
+	return window.location.href + `view?token=${token}&secretKey=${secretKey}`
 }
 
 export default function SavedRecord(props: any): any {
