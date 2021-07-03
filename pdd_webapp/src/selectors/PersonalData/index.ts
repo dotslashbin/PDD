@@ -42,9 +42,7 @@ export default class PersonalDataSelector {
 	static async Fetch(token: string, secretKey: string): Promise<any> {
 		return axios
 			.get(`http://localhost:3001/personal-data?token=${token}&secretKey=${secretKey}`)
-			.then((result) => {
-				return result.data
-			})
+			.then((result) => result.data)
 			.catch((fetchError) => {
 				return fetchError.response
 			})
