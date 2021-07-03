@@ -26,13 +26,10 @@ export default class PDWriter {
 		 * Generating the secret to be used for the encryption and generating the token
 		 */
 		const secretKey = GenerateSecretKey()
-		const { email, fullName, attachment } = this.getEncryptedValues(
-			params,
-			iv,
-			secretKey
-		)
+		const { email, fullName } = this.getEncryptedValues(params, iv, secretKey)
 
 		const { expiry } = params
+		const { attachment } = params
 		const timestampWithAddedMintues = GetExpiryTimestamp(expiry)
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -68,22 +65,17 @@ export default class PDWriter {
 		params: PDDataPayload,
 		iv: any,
 		secretKey: string
-	): { email: string; fullName: string; attachment: any } {
-		let { email, fullName, attachment } = params
+	): { email: string; fullName: string } {
+		let { email, fullName } = params
 
 		if (email && fullName) {
 			const encEmail = Encrypt(email, iv, secretKey)
 			const encFullName = Encrypt(fullName, iv, secretKey)
 
-			if (attachment) {
-				const encAttachment = Encrypt(attachment, iv, secretKey)
-				attachment = encAttachment.content
-			}
-
 			email = encEmail.content
 			fullName = encFullName.content
 		}
 
-		return { email, fullName, attachment }
+		return { email, fullName }
 	}
 }
