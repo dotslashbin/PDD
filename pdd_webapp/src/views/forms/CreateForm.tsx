@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Container from '@material-ui/core/Container'
-import { makeStyles } from '@material-ui/core/styles'
-import { Button, Typography, TextField } from '@material-ui/core'
+import { Container, CssBaseline, Button, Typography, TextField, makeStyles } from '@material-ui/core'
 import PersonalDataSelector from '../../selectors/PersonalData'
 import DisplayMessage from '../notices/DisplayMessage'
 import SavedRecord from '../lists/SavedRecord'
@@ -13,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: theme.spacing(8),
 		display: 'flex',
 		flexDirection: 'column',
-		alignItems: 'center',
+		alignItems: 'left',
 	},
 	form: {
 		width: '100%', // Fix IE 11 issue.
@@ -34,6 +31,9 @@ export default function CreateForm(): any {
 	const [attachement, setAttachment] = useState('')
 	const [message, setMessage] = useState('')
 	const [serverity, setSeverity] = useState('')
+	const [token, setToken] = useState('')
+	const [secretKey, setSecretKey] = useState('')
+	const [showTable, setShowTable] = useState(false)
 
 	const updateEmailValue = (value: string) => {
 		setEmail(value)
@@ -70,7 +70,9 @@ export default function CreateForm(): any {
 			} else {
 				setMessage(result.message)
 				setSeverity('info')
-				console.log(result.data)
+				setToken(result.data.session.token)
+				setSecretKey(result.data.secretKey)
+				setShowTable(true)
 			}
 
 			
@@ -80,65 +82,72 @@ export default function CreateForm(): any {
 	}
 
 	return (
-		<Container component="main" maxWidth="xs">
-			<CssBaseline />
-			<div className={classes.paper}>
-				<Typography component="h1" variant="h5">
+		<div>
+			<Container component="main" maxWidth="xs">
+				<CssBaseline />
+				<div className={classes.paper}>
+					<Typography component="h1" variant="h5">
 					Please enter your personal data
-				</Typography>
-				<form className={classes.form} noValidate>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
-						name="email"
-						autoComplete="email"
-						autoFocus
-						value={email}
-						onChange={(input: any) => {updateEmailValue(input.target.value)}}
-					/>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="name"
-						label="Full Name"
-						name="name"
-						autoComplete="name"
-						value={fullName}
-						onChange={(input: any) => {updateFullName(input.target.value)}}
-					/>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						fullWidth
-						id="expiry"
-						label="Token expiry (in minutes)"
-						name="expiry"
-						autoComplete="expiry"
-						onChange={(input: any) => {updateExpiry(input.target.value)}}
-					/>
-					<input type="file" name="cv" onChange={updateAttachment} />
-					<Button
-						type="button"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-						onClick={() => {submitForm()}}
-					>
+					</Typography>
+					<form className={classes.form} noValidate>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							id="email"
+							label="Email Address"
+							name="email"
+							autoComplete="email"
+							autoFocus
+							value={email}
+							onChange={(input: any) => {updateEmailValue(input.target.value)}}
+						/>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							id="name"
+							label="Full Name"
+							name="name"
+							autoComplete="name"
+							value={fullName}
+							onChange={(input: any) => {updateFullName(input.target.value)}}
+						/>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							fullWidth
+							id="expiry"
+							label="Token expiry (in minutes)"
+							name="expiry"
+							autoComplete="expiry"
+							onChange={(input: any) => {updateExpiry(input.target.value)}}
+						/>
+						<input type="file" name="cv" onChange={updateAttachment} />
+						<Button
+							type="button"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+							onClick={() => {submitForm()}}
+						>
             Submit
-					</Button>
-				</form>
-				<DisplayMessage messages={GetMessagesArray(message)} severity={serverity}/>
-			</div>
-			<div>
-				<SavedRecord />
-			</div>
-		</Container>
+						</Button>
+					</form>
+					<DisplayMessage messages={GetMessagesArray(message)} severity={serverity}/>
+				</div>
+				<div>
+				</div>
+			</Container>
+			{showTable?
+				<Container>
+					<SavedRecord token={token} secretKey={secretKey} />
+				</Container>:''
+			}
+			
+		</div>
 	)
 }
