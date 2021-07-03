@@ -55,7 +55,7 @@ export default function CreateForm(): any {
 			const reader = new FileReader()
 			reader.onload = (readerEvt: any) => {
 				const binaryString = readerEvt.target.result
-				setAttachment(binaryString)
+				setAttachment(btoa(binaryString))
 			}
 			reader.readAsBinaryString(file)
 		}

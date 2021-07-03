@@ -28,14 +28,9 @@ export default class PDReader {
 						iv: DEFAULT_IV,
 					}
 
-					const attachmentHash: Hash = {
-						content: result.attachment.toString(),
-						iv: DEFAULT_IV,
-					}
-
 					const email = Decrypt(emailHash, secretKey)
 					const fullName = Decrypt(fullNameHash, secretKey)
-					const attachment = Decrypt(attachmentHash, secretKey)
+					const attachment = result.attachment.toString()
 
 					return { email, fullName, attachment }
 				})
