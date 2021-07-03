@@ -30,12 +30,12 @@ jobs:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
-        docker login -u DOCKER_USER -P DOCKER_PASSWORD
+        docker login -u DOCKER_USER -p DOCKER_PASSWORD
       working-directory: pdd_api
 
     - name: Building the pdd_api image
       run: docker build . --tag ${{ secrets.DOCKER_USER }}/pdd_api
       working-directory: pdd_api
-      
+
     - name: Pushing image to registry
       run: docker push ${{ secrets.DOCKER_USER }}
