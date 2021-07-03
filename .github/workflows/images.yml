@@ -37,10 +37,15 @@ jobs:
     - name: Pushing image to registry
       run: docker push ${{ secrets.DOCKER_USER }}/pdd_api:latest
 
-    - name: Compile pdd_webapp
-      uses: borales/actions-yarn@v2.3.0
-    - run: yarn && yarn build
-      working-directory: pdd_webpp
+    - name: Compile pdd_api
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install && npm install typescript ts-loader ts-node
+      working-directory: pdd_webapp
+
+    - run: npm run build
+      working-directory: pdd_webapp
 
     - name: Move files to nginx folder
       run: cp -Rvf pdd_webapp/build nginx/content
