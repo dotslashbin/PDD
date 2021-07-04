@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: pdapp-service
+  name: pdapp-mongo3-service
 spec:
   selector:
     app: pdd
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 27017
+      targetPort: 27017
   type: NodePort
