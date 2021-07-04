@@ -6,6 +6,10 @@ metadata:
     app: pdd
 spec:
   containers:
+  - name: pdnginx
+    image: dotslashbin/pdd_nginx
+    ports:
+    - containerPort: 80
   - name: pdapi
     image: dotslashbin/pdd_api
     ports:
