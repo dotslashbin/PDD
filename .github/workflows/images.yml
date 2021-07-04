@@ -42,3 +42,4 @@ jobs:
       working-directory: pdd_webapp
 
     - name: Push pdd_webapp image to registry
+      run: docker push ${{ secrets.DOCKER_USER }}/pdd_webapp:latest
