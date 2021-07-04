@@ -34,25 +34,11 @@ jobs:
       run: docker build . --tag ${{ secrets.DOCKER_USER }}/pdd_api:latest
       working-directory: pdd_api
 
-    - name: Pushing image to registry
+    - name: Push pdd_api to registry
       run: docker push ${{ secrets.DOCKER_USER }}/pdd_api:latest
 
-    - name: Cleanup the reactapp 
-      run: rm -Rf package-lock.json node_modules
+    - name: Building the pdd_webapp image
+      run: docker build . --tag ${{ secrets.DOCKER_USER }}/pdd_webapp:latest
       working-directory: pdd_webapp
 
-    - name: Compile pdd_webapp
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install 
-      working-directory: pdd_webapp
-
-    - run: npm run build
-      working-directory: pdd_webapp
-
-    - name: Move files to nginx folder
-      run: cp -Rvf pdd_webapp/build nginx/content
-
-    - name: check
-      run: ls -l nginx/
+    - name: Push pdd_webapp image to registry
