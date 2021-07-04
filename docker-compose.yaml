@@ -4,6 +4,7 @@ services:
       restart: always
       build:
           context: ./nginx
+          dockerfile: Dockerfile-local
       image: pdd_nginx
       container_name: pdd_nginx
       ports:
@@ -14,6 +15,7 @@ services:
     pdd_api:
         build:
             context: ./pdd_api
+            dockerfile: Dockerfile-local
         image: pdd_api
         container_name: pdd_api
         networks:
