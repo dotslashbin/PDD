@@ -63,7 +63,8 @@ export default function PDDisplay(props: any): any {
 					
 					setStatus(result.status)
 					setPersonalData(result.data)
-					setAttachment(`data:application/pdf;base64,${result.data.attachment}`)
+					const attachmentValue = (result.data.attachment)?`data:application/pdf;base64,${result.data.attachment}`:''
+					setAttachment(attachmentValue)
 				}
 			})
 		}
@@ -76,6 +77,9 @@ export default function PDDisplay(props: any): any {
 					<DisplayMessage messages={GetMessagesArray(message)} severity={severity} />
 				</div>: 
 				<div>
+					<br />
+					<br />
+					<br />
 					<Card className={classes.root} variant="outlined">
 						<CardContent>
 							<Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -90,20 +94,22 @@ export default function PDDisplay(props: any): any {
 							<Typography variant="subtitle1">
 								<span className={classes.email}>{personalData.email}</span>
 							</Typography>
-							<Typography>
+							{(attachment)?<Typography>
 								<a href={attachment} download>Download CV</a>
-							</Typography>
+							</Typography>:''}
+							
 						</CardContent>
 					</Card>
 					<hr />
-					<Card>
-						<CardContent>
-							<Typography variant="caption">
+					{(attachment)?
+						<Card>
+							<CardContent>
+								<Typography variant="caption">
 								PDF view
-							</Typography>
-							<iframe src={attachment} height="800px" width="100%"></iframe>
-						</CardContent>
-					</Card>
+								</Typography>
+								<iframe src={attachment} height="800px" width="100%"></iframe>
+							</CardContent>
+						</Card>:''}
 				</div>
 			}
 		</Container>
