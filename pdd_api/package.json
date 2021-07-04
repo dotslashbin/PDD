@@ -1,6 +1,6 @@
 {
   "name": "pdd_api",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "API backend for PDD ( Personal Data Datbase )",
   "main": "index.js",
   "scripts": {

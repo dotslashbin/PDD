@@ -1,0 +1,45 @@
+name: Deploy Images to dockerhub
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Compile pdd_api
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install && npm install typescript ts-loader ts-node
+      working-directory: pdd_api
+
+    - run: tsc -p . 
+      working-directory: pdd_api
+    
+    - name: Docker Login
+      run: |
+        docker login -u ${{ secrets.DOCKER_USER }} --password ${{ secrets.DOCKER_PASSWORD }}
+      working-directory: pdd_api
+
+    - name: Building the pdd_api image
+      run: docker build . --tag ${{ secrets.DOCKER_USER }}/pdd_api:latest
+      working-directory: pdd_api
+
+    - name: Push pdd_api to registry
+      run: docker push ${{ secrets.DOCKER_USER }}/pdd_api:latest
+
+    - name: Building the pdd_webapp image
+      run: docker build . --tag ${{ secrets.DOCKER_USER }}/pdd_webapp:latest
+      working-directory: pdd_webapp
+
+    - name: Push pdd_webapp image to registry
+      run: docker push ${{ secrets.DOCKER_USER }}/pdd_webapp:latest
