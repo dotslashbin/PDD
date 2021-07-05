@@ -1,11 +1,18 @@
-import chai from 'chai'
-import 'mocha'
-import { GenerateSecretKey } from '../helpers/Utilities'
+// import chai from 'chai'
+// import chaiHttp from 'chai-http'
 
-const expect = chai.expect
+// chai.use(chaiHttp)
+// import 'mocha'
+// import app from '../app'
+// // const expect = chai.expect
 
-describe('Utilities', () => {
-	it('Should return a secret key', () => {
-		expect(GenerateSecretKey()).not.null
-	})
-})
+// describe('Get requests', () => {
+// 	it('No parameters should return a 401', () => {
+// 		chai
+// 			.request(app)
+// 			.get('/personal-data')
+// 			.then((x) => {
+// 				console.log(x)
+// 			})
+// 	}).timeout(5000)
+// })
