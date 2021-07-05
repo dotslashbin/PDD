@@ -2,7 +2,7 @@ name: Deploy Images to dockerhub
 on:
   push:
     branches:
-      - main
+      - test
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -23,6 +23,10 @@ jobs:
       working-directory: pdd_api
 
     - run: tsc -p . 
+      working-directory: pdd_api
+
+    - name: Run tests
+      run: npm run tests
       working-directory: pdd_api
     
     - name: Docker Login
