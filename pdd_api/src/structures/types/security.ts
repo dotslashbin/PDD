@@ -1,4 +1,4 @@
-import import { Session } from '../interfaces'
+import { Session } from '../interfaces'
 
 /**
  * Definition of a hash
