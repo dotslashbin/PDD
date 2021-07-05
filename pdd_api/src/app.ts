@@ -1,6 +1,6 @@
 import express from 'express'
 
-async function startServer() {
+export default async function startServer() {
 	const app = express()
 
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
