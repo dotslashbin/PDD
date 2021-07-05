@@ -2,7 +2,7 @@ name: Deploy Images to dockerhub
 on:
   push:
     branches:
-      - test
+      - tests
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
