@@ -1,55 +1,55 @@
-version: "3.8"
+version: '3.8'
 services:
-    pdd_nginx:
-      restart: always
-      build:
-          context: ./nginx
-          dockerfile: Dockerfile-local
-      image: pdd_nginx
-      container_name: pdd_nginx
-      ports:
-          - "80:80"
-      networks:
-        pddnet:
-          ipv4_address: 10.6.0.8
-    pdd_api:
-        build:
-            context: ./pdd_api
-            dockerfile: Dockerfile-local
-        image: pdd_api
-        container_name: pdd_api
-        networks:
-          pddnet:
-            ipv4_address: 10.6.0.7
-        environment:
-          - PORT=3001
-          - MONGOURL=mongodb://pdd_db:27017/pdd
-        ports:
-          - "3001:3001"
-    pdd_webapp:
-        build:
-            context: ./pdd_webapp
-        image: pdd_webapp
-        container_name: pdd_webapp
-        networks:
-          pddnet:
-            ipv4_address: 10.6.0.10
-        environment:
-          - SKIP_PREFLIGHT_CHECK=true
-        ports:
-          - "3000:3000"
-    pdd_db:
-        image: mongo
-        container_name: pdd_db
-        ports:
-            - "27017:27017"
-        restart: unless-stopped
-        networks:
-          pddnet:
-            ipv4_address: 10.6.0.9
+  pdd_nginx:
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile-local
+    image: pdd_nginx
+    container_name: pdd_nginx
+    ports:
+      - '80:80'
+    networks:
+      pddnet:
+        ipv4_address: 10.6.0.8
+  pdd_api:
+    build:
+      context: ./pdd_api
+      dockerfile: Dockerfile-local
+    image: pdd_api
+    container_name: pdd_api
+    networks:
+      pddnet:
+        ipv4_address: 10.6.0.7
+    environment:
+      - PORT=3001
+      - 'MONGOURL=mongodb://pdd_db:27017/pdd'
+    ports:
+      - '3001:3001'
+  pdd_webapp:
+    build:
+      context: ./pdd_webapp
+    image: pdd_webapp
+    container_name: pdd_webapp
+    networks:
+      pddnet:
+        ipv4_address: 10.6.0.10
+    environment:
+      - SKIP_PREFLIGHT_CHECK=true
+    ports:
+      - '3000:3000'
+  pdd_db:
+    image: mongo
+    container_name: pdd_db
+    ports:
+      - '27017:27017'
+    restart: unless-stopped
+    networks:
+      pddnet:
+        ipv4_address: 10.6.0.9
 networks:
   pddnet:
-      driver: bridge
-      ipam:
-        config:
-            - subnet: 10.6.0.0/16
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.6.0.0/16

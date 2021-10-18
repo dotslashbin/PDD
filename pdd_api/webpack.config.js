@@ -4,6 +4,7 @@ const { ModuleFilenameHelpers } = require( 'webpack' )
 module.exports = {
 	entry: './src/app.ts',
 	devtool: 'inline-source-map',
+	target: 'node', 
 	module: {
 		rules: [
 			{

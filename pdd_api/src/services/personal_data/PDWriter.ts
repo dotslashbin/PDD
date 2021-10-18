@@ -32,6 +32,8 @@ export default class PDWriter {
 		const { attachment } = params
 		const timestampWithAddedMintues = GetExpiryTimestamp(expiry)
 
+		model.updateOne
+
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		return db
 			.Save(
